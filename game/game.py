@@ -155,6 +155,9 @@ class Player(GameSprite):
         self.speed = 0
         self.image = pygame.image.load("images/nothing.png")
         self.die = True
+    def fire(self):
+        bullet = Bullet("images/bed.png", player.rect.x, player.rect.y+10, 10, 10, 10, player.naprav)
+        bullets.append(bullet)
 class Player2(GameSprite):
     
     def animcr(self):
@@ -175,15 +178,15 @@ class Player2(GameSprite):
         self.spritestop.append(image)
         self.current_sprite = 0
         self.image = self.spritestop[int(self.current_sprite)]
-        image = pygame.transform.scale(pygame.image.load("images/player/playerleft1.png"), (self.width, self.hight))
+        image = pygame.transform.scale(pygame.image.load("images/player2/player2left1.png"), (self.width, self.hight))
         self.spritesleft.append(image)
-        image = pygame.transform.scale(pygame.image.load("images/player/playerleft2.png"), (self.width, self.hight))
+        image = pygame.transform.scale(pygame.image.load("images/player2/player2left2.png"), (self.width, self.hight))
         self.spritesleft.append(image)
         self.current_sprite = 0
         self.image = self.spritesleft[int(self.current_sprite)]
-        image = pygame.transform.scale(pygame.image.load("images/player/playerright1.png"), (self.width, self.hight))
+        image = pygame.transform.scale(pygame.image.load("images/player2/player2right1.png"), (self.width, self.hight))
         self.spritesright.append(image)
-        image = pygame.transform.scale(pygame.image.load("images/player/playerright2.png"), (self.width, self.hight))
+        image = pygame.transform.scale(pygame.image.load("images/player2/player2right2.png"), (self.width, self.hight))
         self.spritesright.append(image)
         self.current_sprite = 0
         self.image = self.spritesright[int(self.current_sprite)]
@@ -225,10 +228,10 @@ class Player2(GameSprite):
             global canfall2
             if is_jump2 != False:
                 if self.naprav == "left":
-                    image = pygame.transform.scale(pygame.image.load("images/player/playerleftjump.png"), (player.width, player.hight))
+                    image = pygame.transform.scale(pygame.image.load("images/player2/player2leftjump.png"), (player.width, player.hight))
                     self.image = image
                 if self.naprav == "right":
-                    image = pygame.transform.scale(pygame.image.load("images/player/playerrightjump.png"), (player.width, player.hight))
+                    image = pygame.transform.scale(pygame.image.load("images/player2/player2rightjump.png"), (player.width, player.hight))
                     self.image = image
                 if jumpspeed2 >= -startjumpspeed2+1:
                     if jumpspeed2 > 0:
@@ -239,10 +242,10 @@ class Player2(GameSprite):
                     jumpspeed2 -= 1
                 else:
                     if self.naprav == "left":
-                        image = pygame.transform.scale(pygame.image.load("images/player/playerleft.png"), (player.width, player.hight))
+                        image = pygame.transform.scale(pygame.image.load("images/player2/player2left.png"), (player.width, player.hight))
                         self.image = image
                     if self.naprav == "right":
-                        image = pygame.transform.scale(pygame.image.load("images/player/playerright.png"), (player.width, player.hight))
+                        image = pygame.transform.scale(pygame.image.load("images/player2/player2right.png"), (player.width, player.hight))
                         self.image = image
                     canfall2 = True
                     jumpspeed2 = startjumpspeed2    
@@ -252,7 +255,38 @@ class Player2(GameSprite):
         self.speed = 0
         self.image = pygame.image.load("images/nothing.png")
         self.die = True
-
+# класс противников
+class Enemy(GameSprite):
+    def tel(self):
+        self.rect.x = randint(10, 700) 
+        self.rect.y = randint(10, 500) 
+        i = randint(1, 2)
+        if self.rect.y <=430 and self.rect.y >= 20:
+            if i == 1:
+                self.rect.x = 0
+            if i == 2:
+                self.rect.x = 700
+        self.speed = randint(1,2)
+    def run(self):
+        if self.rect.x <player.rect.x:
+            self.rect.x+= self.speed
+        if self.rect.x >player.rect.x:
+            self.rect.x-= self.speed  
+        if self.rect.y <player.rect.y:
+            self.rect.y+= self.speed
+        if self.rect.y >player.rect.y:
+            self.rect.y-= self.speed
+# класс пуль
+class Bullet(GameSprite):
+    def fly(self):
+        if self.naprav == "left":
+            self.rect.x-=self.speed
+        if self.naprav == "right":
+            self.rect.x+=self.speed
+        if self.naprav == "top":
+            self.rect.y-=self.speed
+        if self.naprav == "down":
+            self.rect.y+=self.speed
 # класс мусора
 class Trash(GameSprite):
     def tel(self):
@@ -269,9 +303,15 @@ class Text():
         self.text = text
         self.font = font
         self.color = color
+        self.size = self.font.size(str(self.text))
+        self.surface = pygame.Surface([self.size[0]+10, self.size[1]+10], pygame.SRCALPHA, 32)
+        self.surface = self.surface.convert_alpha()
+        self.surface.fill((0, 0, 0, 180))
     def apear(self):
         self.word = self.font.render(str(self.text), True, self.color)
+        win.blit(self.surface, (self.x-5, self.y-5))
         win.blit(self.word, (self.x, self.y))
+        
 # цвета
 white = (255, 255, 255)
 black = (0, 0, 0)
@@ -280,8 +320,8 @@ green = (0, 255, 0)
 blue = (0, 0, 255)
 # назначаю шрифты
 pygame.font.init()
-font1 = pygame.font.Font(None, 70)
-font2 = pygame.font.Font(None, 200)
+font1 = pygame.font.Font("better-vcr_0.ttf", 20)
+font2 = pygame.font.Font("better-vcr_0.ttf", 8)
 # переменная для списка тайтлов
 titles = []        
 dietitles = []
@@ -301,17 +341,79 @@ canfall2 = True
 currentlvl = -1
 currentmap = 0
 canplay1 = True
-canplay2 = True
+canplay2 = False
 game2 = False
 losegame2 = False
 fallgame2stop = False
 canbigfall = True
 cansetcurecttime = True
 game3 = False
-canplay3 = True
 naprav = "down"
 bullets = list()
 menu = True
+canplay3 = False
+game3 = False
+enemys = list()
+hp = 3
+stopgame = False
+canspawn = True
+killcount = 0
+cancarrysomething = False
+gameend = False
+iscutscene = False
+currenttext = 0
+texts = list()
+# разные тексты
+text0 = "phone: Привет, не мог ли ты мне достать "
+text1 = "phone: потеряную риликвию со дна моря?"
+text2 = "phone: Ты же не далеко живёшь, помоги. "
+text3 = "phone: Она очень важна для меня. "
+text4 = "вы: Ладно, ты сможешь помочь мне  "
+text5 = "вы: с её поиском? "
+text6 = "phone: Конечно, одевайся и выходи. "
+text7 = "phone: Потом раскажу подробности."
+text8 = "звонок обрывается"
+text9 = "вы: Ладно я иду."
+text10 = "Встроеный наушник: Спуститесь в море 'space'"
+text11 = "cave, коснитесь чтобы"
+text12 = "перейти на след. уровень"
+text13 = "Enemy, если она дойдёт"
+text14 = "до пещеры, то вы проиг-"
+text15 = "раете, так же она пов-"
+text16 = "торяет, все ващи дейст-"
+text17 = "вия, только наоборот."
+text18 = "Шипы, если вы или enemy"
+text19 = "наступит на них, то ум-"
+text20 = "рёте, вам стоит быть ос-"
+text21 = "торожнее"
+text22 = "D, идти в лево"
+text23 = "W, прыжок"
+text24 = "A, идти в право"
+texts.append(text0)
+texts.append(text1)
+texts.append(text2)
+texts.append(text3)
+texts.append(text4)
+texts.append(text5)
+texts.append(text6)
+texts.append(text7)
+texts.append(text8)
+texts.append(text9)
+texts.append(text10)
+texts.append(text11)
+texts.append(text12)
+texts.append(text13)
+texts.append(text14)
+texts.append(text15)
+texts.append(text16)
+texts.append(text17)
+texts.append(text18)
+texts.append(text19)
+texts.append(text20)
+texts.append(text21)
+texts.append(text22)
+texts.append(text23)
+texts.append(text24)
 # разные карты
 map1 ="aaaaaaaaaaaaaaa//aaaaaaaaaaaaaaa//aaaaaaaaaaaaaaa//aaaaaaaaaaaaaaa//aaaaaaaaaaaaaaa//aaaaaaaaaaaaaaa//aaaaaaaaaaaaaaa/"
 map2 = "aaaaaaaaaaaaaaa//aaaaaaaaaaaaaaa//aaaaaaaaaaaaaaa//aaaaaaaaaaaaaaa//aaaaaaaaaaaaaaa//aaaaaaaaaaaaaaa//aaaaaaaaaaaaaaa/"
@@ -498,7 +600,7 @@ trash11 = Trash("images/player/playerdown1.png", randint(10, 700-60), 10, randin
 trashs = list()
 trashs.append(trash1)
 trashs.append(trash2)
-trashs.append(trash3)
+trashs.append(trash3) 
 trashs.append(trash4)
 trashs.append(trash5)
 trashs.append(trash6)
@@ -508,6 +610,29 @@ trashs.append(trash9)
 trashs.append(trash10)
 trashs.append(trash11)
 trashBIG = Trash("images/player/playerdown1.png", 200, 10, 2, 200, 200, "net")
+# противники
+enemy1 = Enemy("images/player/playerdown1.png", randint(10, 700-60), 10, randint(1, 5), 70, 70, "net")
+enemy1.tel()
+enemys.append(enemy1)
+enemy2 = Enemy("images/player/playerdown1.png", randint(10, 700-60), 10, randint(1, 5), 70, 70, "net")
+enemy2.tel()
+enemys.append(enemy2)
+enemy3 = Enemy("images/player/playerdown1.png", randint(10, 700-60), 10, randint(1, 5), 70, 70, "net")
+enemy3.tel()
+enemys.append(enemy3)
+enemy4 = Enemy("images/player/playerdown1.png", randint(10, 700-60), 10, randint(1, 5), 70, 70, "net")
+enemy4.tel()
+enemys.append(enemy4)
+enemy5 = Enemy("images/player/playerdown1.png", randint(10, 700-60), 10, randint(1, 5), 70, 70, "net")
+enemy5.tel()
+enemys.append(enemy5)
+enemy6 = Enemy("images/player/playerdown1.png", randint(10, 700-60), 10, randint(1, 5), 70, 70, "net")
+enemy6.tel()
+enemys.append(enemy6)
+enemy7 = Enemy("images/player/playerdown1.png", randint(10, 700-60), 10, randint(1, 5), 70, 70, "net")
+enemy7.tel()
+enemys.append(enemy7)
+
 # переменная для таймера
 cancurecttime = True
 done = False
@@ -586,6 +711,19 @@ while run:
                 if pygame.sprite.collide_rect(player, door):
                     if i.key == pygame.K_SPACE:
                         currentmap +=1
+                if game3 == True:
+                    if i.key == pygame.K_f:
+                        # стрелять
+                        player.fire()
+                if iscutscene == True:
+                    if currentlvl == 3:
+                        if i.key == pygame.K_SPACE:
+                            currenttext = 25
+                            iscutscene = False
+                            screendark()
+                    else:
+                        if i.key == pygame.K_SPACE:
+                            currenttext+=1
     if pause == False:
         if menu == True:
             # фон
@@ -606,56 +744,73 @@ while run:
                     currentlvl = 0
                     currentmap = 0
                     menu = False
+                    iscutscene = True
         if currentlvl == 0:
-            # фон 
-            bg = GameSprite("images/fon1.png", 0, 0, 0, 700, 500, "net")
-            # Смена карты
-            if currentmap == 1:
-                screendark()
-                #создание карты
-                map = map1
-                TitleX = 0
-                line = 50
-                titles.clear()
-                Createmap(map)
-                cave_1.rect.x = 900
-                currentlvl +=1
-            # отрисофка фона
-            bg.reset()
-            # отрисовка тайтлов
-            do_function3(titles)
-            # уровни
-            door.move()
-            door.reset()
-            # игрок
-            player.reset()
-            keys = pygame.key.get_pressed()
-            # анимации
-            if keys[pygame.K_s]:
-                player.animdown()
-            if keys[pygame.K_w]:
-                player.animtop()
-            if keys[pygame.K_a]:
-                player.animleft()
-            if keys[pygame.K_d]:
-                player.animright()
-            if keys[pygame.K_d] != True and keys[pygame.K_w] != True and keys[pygame.K_a] != True and keys[pygame.K_s] != True:
-                if player.naprav == "down":
-                    image = pygame.transform.scale(pygame.image.load("images/player/player1.png"), (player.width, player.hight))
-                    player.image = image
-                if player.naprav == "top":
-                    image = pygame.transform.scale(pygame.image.load("images/player/playertop1.png"), (player.width, player.hight))
-                    player.image = image
-                if player.naprav == "left":
-                    image = pygame.transform.scale(pygame.image.load("images/player/playerleft.png"), (player.width, player.hight))
-                    player.image = image
-                if player.naprav == "right":
-                    image = pygame.transform.scale(pygame.image.load("images/player/playerright.png"), (player.width, player.hight))
-                    player.image = image
-            # действия
-            if keys[pygame.K_p]:
-                pause = True
+            # текст
+            text = Text(30,450,texts[currenttext], font1, white) 
+            # кат сцена
+            cutscene = GameSprite("images/cutscene1.png", 0, 0, 0, 700, 500, "net")
+            if iscutscene == True:
+                cutscene.reset()
+                text.apear()
+                if currenttext >= 9:
+                    screendark()
+                    iscutscene = False
+            else:
+                # фон 
+                bg = GameSprite("images/fon1.png", 0, 0, 0, 700, 500, "net")
+                # Смена карты
+                if currentmap == 1:
+                    screendark()
+                    #создание карты
+                    map = map1
+                    TitleX = 0
+                    line = 50
+                    titles.clear()
+                    Createmap(map)
+                    cave_1.rect.x = 900
+                    currentlvl +=1
+                    currenttext= 10
+                # отрисофка фона
+                bg.reset()
+                # отрисовка тайтлов
+                do_function3(titles)
+                # уровни
+                door.move()
+                door.reset()
+                # игрок
+                player.reset()
+                keys = pygame.key.get_pressed()
+                # анимации
+                if keys[pygame.K_s]:
+                    player.animdown()
+                if keys[pygame.K_w]:
+                    player.animtop()
+                if keys[pygame.K_a]:
+                    player.animleft()
+                if keys[pygame.K_d]:
+                    player.animright()
+                if keys[pygame.K_d] != True and keys[pygame.K_w] != True and keys[pygame.K_a] != True and keys[pygame.K_s] != True:
+                    if player.naprav == "down":
+                        image = pygame.transform.scale(pygame.image.load("images/player/player1.png"), (player.width, player.hight))
+                        player.image = image
+                    if player.naprav == "top":
+                        image = pygame.transform.scale(pygame.image.load("images/player/playertop.png"), (player.width, player.hight))
+                        player.image = image
+                    if player.naprav == "left":
+                        image = pygame.transform.scale(pygame.image.load("images/player/playerleft.png"), (player.width, player.hight))
+                        player.image = image
+                    if player.naprav == "right":
+                        image = pygame.transform.scale(pygame.image.load("images/player/playerright.png"), (player.width, player.hight))
+                        player.image = image
+                # действия
+                if keys[pygame.K_p]:
+                    pause = True
         if currentlvl == 1:
+            # текст
+            text = Text(30,450,texts[currenttext], font1, white) 
+            # подсказка
+            space = GameSprite("images/space.png", 0, 0, 0, 80, 50, "net")
             # фон 
             bg = GameSprite("images/floor_2.png", 0, 0, 0, 700, 500, "net")
             # Смена карты
@@ -666,6 +821,7 @@ while run:
                 currentlvl +=1
             # отрисофка фона
             bg.reset()
+            
             # отрисовка тайтлов
             do_function(titles)
             # уровни
@@ -675,6 +831,13 @@ while run:
             # игрок
             player.reset()
             keys = pygame.key.get_pressed()
+            # отрисовка текста
+            text.apear()
+            # отрисовка подсказки
+            if cave_1.rect.x <=300:
+                space.rect.x = player.rect.x-10
+                space.rect.y = player.rect.y-60
+                space.reset()
             # анимации
             if keys[pygame.K_s]:
                 player.animdown()
@@ -689,7 +852,7 @@ while run:
                     image = pygame.transform.scale(pygame.image.load("images/player/player1.png"), (player.width, player.hight))
                     player.image = image
                 if player.naprav == "top":
-                    image = pygame.transform.scale(pygame.image.load("images/player/playertop1.png"), (player.width, player.hight))
+                    image = pygame.transform.scale(pygame.image.load("images/player/playertop.png"), (player.width, player.hight))
                     player.image = image
                 if player.naprav == "left":
                     image = pygame.transform.scale(pygame.image.load("images/player/playerleft.png"), (player.width, player.hight))
@@ -703,8 +866,9 @@ while run:
         if currentlvl == 2:   
             bg = GameSprite("images/bg3.png", 0, 0, 0, 700, 500, "net")
             # создаю иконки игр
-            plate = GameSprite("images/plate_1.png", 100, 100, 10, 150, 150, "net")
-            plate2 = GameSprite("images/plate_1.png", 450, 100, 10, 150, 150, "net")
+            plate = GameSprite("images/game_1.png", 100, 100, 10, 150, 150, "net")
+            plate2 = GameSprite("images/game_1.png", 450, 100, 10, 150, 150, "net")
+            plate3 = GameSprite("images/game_1.png", 250, 300, 10, 150, 150, "net")
             # Смена карты
             if currentmap == 3:
                 screendark()
@@ -723,6 +887,7 @@ while run:
             # отрисовка окон
             plate.reset()
             plate2.reset()
+            plate3.reset()
             # нажатие мыши
             pressed = pygame.mouse.get_pressed()
             pos = pygame.mouse.get_pos()
@@ -731,90 +896,131 @@ while run:
                 print(pos, plate.rect.x, plate.rect.y)
                 if pressed[0] == True:
                     if canplay1 == True:
+                        iscutscene = True
                         currentmap = 3
             if plate2.rect.collidepoint(pos):
                 print(pos, plate2.rect.x, plate2.rect.y)
                 if pressed[0] == True:
                     if canplay2 == True:
                         canplay1 = False
+                        canplay3 = False
                         game2 = True
+            if plate3.rect.collidepoint(pos):
+                print(pos, plate3.rect.x, plate3.rect.y)
+                if pressed[0] == True:
+                    if canplay3 == True:
+                        canplay1 = False
+                        game3 = True
                         
             
-        if currentlvl == 3:    
-            # Смена карты
-            if currentmap == 4:
-                screendark()
-                #создание карты
-                map = map4
-                TitleX = 0
-                line = 50
-                titles.clear()
-                dietitles.clear()
-                doors.clear()
-                Createmap(map)
-                rest(310, 300, 500, 300)
-                currentlvl+=1
-            # прыжок и движение
-            player2.jump()
-            player2.move()
-            player3.jump()
-            player3.move()          
-            # колизия
-            do_collide(titles)     
-            # отрисовка заднего фона
-            sky.reset()
-            # отрисовка тайтлов 
-            do_function2(titles)
-            # игрок
-            
-            player2.reset()
-            player3.reset()
-            if player2.rect.y >= 430:
-                player2.isdead()
-            if player3.rect.y >= 430:
-                player3.isdead()
-            keys = pygame.key.get_pressed()
-            # запрещаю выходить за края!
-            if player2.rect.x <= 0:
-                player2.rect.x = 0
-            if player3.rect.x <= 0:
-                player3.rect.x = 0
-            if player2.rect.x >= 630:
-                player2.rect.x = 630
-            if player3.rect.x >= 630:
-                player3.rect.x = 630
-            # игрок
-            player2.reset()
-            keys = pygame.key.get_pressed()
-            # анимации
-            if keys[pygame.K_a]:
-                player2.animleft()
-            if keys[pygame.K_d]:
-                player2.animright()
-            if keys[pygame.K_d] != True and keys[pygame.K_a] != True:
-                if player2.naprav == "left":
-                    image = pygame.transform.scale(pygame.image.load("images/player/playerleft.png"), (player.width, player.hight))
-                    player2.image = image
-                if player2.naprav == "right":
-                    image = pygame.transform.scale(pygame.image.load("images/player/playerright.png"), (player.width, player.hight))
-                    player2.image = image
-            # ещё анимации
-            if keys[pygame.K_a]:
-                player3.animright()
-            if keys[pygame.K_d]:
-                player3.animleft()
-            if keys[pygame.K_d] != True and keys[pygame.K_a] != True:
-                if player3.naprav == "left":
-                    image = pygame.transform.scale(pygame.image.load("images/player/playerleft.png"), (player.width, player.hight))
-                    player3.image = image
-                if player3.naprav == "right":
-                    image = pygame.transform.scale(pygame.image.load("images/player/playerright.png"), (player.width, player.hight))
-                    player3.image = image
-            # действия
-            if keys[pygame.K_p]:
-                pause = True
-            if keys[pygame.K_r]:
-                rest(15, 300, 310, 300)
+        if currentlvl == 3:   
+            if iscutscene == True:
+                bg = GameSprite("images/cutscene2.png", 0, 0, 0, 700, 500, "net")
+                bg.reset()
+                # текст
+                text = Text(180,30,texts[11], font2, white) 
+                text2 = Text(180,60,texts[12], font2, white) 
+                text.apear()
+                text2.apear()
+                text3 = Text(360,30,texts[13], font2, white) 
+                text4 = Text(360,60,texts[14], font2, white) 
+                text3.apear()
+                text4.apear()
+                text5 = Text(360,90,texts[15], font2, white) 
+                text6 = Text(360,120,texts[16], font2, white) 
+                text5.apear()
+                text6.apear()
+                text7 = Text(360,160,texts[17], font2, white) 
+                text7.apear()
+                text8 = Text(180,260,texts[18], font2, white) 
+                text8.apear()
+                text9 = Text(180,390,texts[19], font2, white) 
+                text9.apear()
+                text10 = Text(180,420,texts[20], font2, white) 
+                text10.apear()
+                text11 = Text(180,450,texts[21], font2, white) 
+                text11.apear()
+                text12 = Text(430,290,texts[22], font2, white) 
+                text12.apear()
+                text13 = Text(540,290,texts[23], font2, white) 
+                text13.apear()
+                text14 = Text(430,450,texts[24], font2, white) 
+                text14.apear()
+            else:    
+                # Смена карты
+                if currentmap == 4:
+                    screendark()
+                    #создание карты
+                    map = map4
+                    TitleX = 0
+                    line = 50
+                    titles.clear()
+                    dietitles.clear()
+                    doors.clear()
+                    Createmap(map)
+                    rest(310, 300, 500, 300)
+                    currentlvl+=1
+                # прыжок и движение
+                player2.jump()
+                player2.move()
+                player3.jump()
+                player3.move()          
+                # колизия
+                do_collide(titles)     
+                # отрисовка заднего фона
+                sky.reset()
+                # отрисовка тайтлов 
+                do_function2(titles)
+                # игрок
+                
+                player2.reset()
+                player3.reset()
+                if player2.rect.y >= 430:
+                    player2.isdead()
+                if player3.rect.y >= 430:
+                    player3.isdead()
+                keys = pygame.key.get_pressed()
+                # запрещаю выходить за края!
+                if player2.rect.x <= 0:
+                    player2.rect.x = 0
+                if player3.rect.x <= 0:
+                    player3.rect.x = 0
+                if player2.rect.x >= 630:
+                    player2.rect.x = 630
+                if player3.rect.x >= 630:
+                    player3.rect.x = 630
+                # игрок
+                player2.reset()
+                keys = pygame.key.get_pressed()
+                # анимации
+                if keys[pygame.K_a]:
+                    player2.animleft()
+                if keys[pygame.K_d]:
+                    player2.animright()
+                if keys[pygame.K_d] != True and keys[pygame.K_a] != True:
+                    if player2.naprav == "left":
+                        image = pygame.transform.scale(pygame.image.load("images/player/playerleft.png"), (player.width, player.hight))
+                        player2.image = image
+                    if player2.naprav == "right":
+                        image = pygame.transform.scale(pygame.image.load("images/player/playerright.png"), (player.width, player.hight))
+                        player2.image = image
+                # ещё анимации
+                if keys[pygame.K_a]:
+                    player3.animright()
+                if keys[pygame.K_d]:
+                    player3.animleft()
+                if keys[pygame.K_d] != True and keys[pygame.K_a] != True:
+                    if player3.naprav == "left":
+                        image = pygame.transform.scale(pygame.image.load("images/player2/player2left.png"), (player.width, player.hight))
+                        player3.image = image
+                    if player3.naprav == "right":
+                        image = pygame.transform.scale(pygame.image.load("images/player2/player2right.png"), (player.width, player.hight))
+                        player3.image = image
+                # действия
+                if keys[pygame.K_p]:
+                    pause = True
+                if keys[pygame.K_r]:
+                    rest(15, 300, 310, 300)
         if currentlvl == 4:    
             # Смена карты
             if currentmap == 5:
@@ -873,16 +1079,17 @@ while run:
                     image = pygame.transform.scale(pygame.image.load("images/player/playerright.png"), (player.width, player.hight))
                     player2.image = image
             # ещё анимации
+            # ещё анимации
             if keys[pygame.K_a]:
                 player3.animright()
             if keys[pygame.K_d]:
                 player3.animleft()
             if keys[pygame.K_d] != True and keys[pygame.K_a] != True:
                 if player3.naprav == "left":
-                    image = pygame.transform.scale(pygame.image.load("images/player/playerleft.png"), (player.width, player.hight))
+                    image = pygame.transform.scale(pygame.image.load("images/player2/player2left.png"), (player.width, player.hight))
                     player3.image = image
                 if player3.naprav == "right":
-                    image = pygame.transform.scale(pygame.image.load("images/player/playerright.png"), (player.width, player.hight))
+                    image = pygame.transform.scale(pygame.image.load("images/player2/player2right.png"), (player.width, player.hight))
                     player3.image = image
             # действия
             if keys[pygame.K_p]:
@@ -948,16 +1155,17 @@ while run:
                     image = pygame.transform.scale(pygame.image.load("images/player/playerright.png"), (player.width, player.hight))
                     player2.image = image
             # ещё анимации
+            # ещё анимации
             if keys[pygame.K_a]:
                 player3.animright()
             if keys[pygame.K_d]:
                 player3.animleft()
             if keys[pygame.K_d] != True and keys[pygame.K_a] != True:
                 if player3.naprav == "left":
-                    image = pygame.transform.scale(pygame.image.load("images/player/playerleft.png"), (player.width, player.hight))
+                    image = pygame.transform.scale(pygame.image.load("images/player2/player2left.png"), (player.width, player.hight))
                     player3.image = image
                 if player3.naprav == "right":
-                    image = pygame.transform.scale(pygame.image.load("images/player/playerright.png"), (player.width, player.hight))
+                    image = pygame.transform.scale(pygame.image.load("images/player2/player2right.png"), (player.width, player.hight))
                     player3.image = image
             # действия
             if keys[pygame.K_p]:
@@ -1028,10 +1236,10 @@ while run:
                 player3.animleft()
             if keys[pygame.K_d] != True and keys[pygame.K_a] != True:
                 if player3.naprav == "left":
-                    image = pygame.transform.scale(pygame.image.load("images/player/playerleft.png"), (player.width, player.hight))
+                    image = pygame.transform.scale(pygame.image.load("images/player2/player2left.png"), (player.width, player.hight))
                     player3.image = image
                 if player3.naprav == "right":
-                    image = pygame.transform.scale(pygame.image.load("images/player/playerright.png"), (player.width, player.hight))
+                    image = pygame.transform.scale(pygame.image.load("images/player2/player2right.png"), (player.width, player.hight))
                     player3.image = image
             # действия
             if keys[pygame.K_p]:
@@ -1092,16 +1300,17 @@ while run:
                     image = pygame.transform.scale(pygame.image.load("images/player/playerright.png"), (player.width, player.hight))
                     player2.image = image
             # ещё анимации
+            # ещё анимации
             if keys[pygame.K_a]:
                 player3.animright()
             if keys[pygame.K_d]:
                 player3.animleft()
             if keys[pygame.K_d] != True and keys[pygame.K_a] != True:
                 if player3.naprav == "left":
-                    image = pygame.transform.scale(pygame.image.load("images/player/playerleft.png"), (player.width, player.hight))
+                    image = pygame.transform.scale(pygame.image.load("images/player2/player2left.png"), (player.width, player.hight))
                     player3.image = image
                 if player3.naprav == "right":
-                    image = pygame.transform.scale(pygame.image.load("images/player/playerright.png"), (player.width, player.hight))
+                    image = pygame.transform.scale(pygame.image.load("images/player2/player2right.png"), (player.width, player.hight))
                     player3.image = image
             # действия
             if keys[pygame.K_p]:
@@ -1110,7 +1319,7 @@ while run:
                 rest(15, 200, 629, 300)
 
         if game2 == True:
-            if najat < 10:
+            if najat < 100:
                 # вывод количества подобраного мусора
                 trashtext = Text(20, 20, najat, font1, black)
                 # фон
@@ -1190,7 +1399,7 @@ while run:
                     trash10.tel()
                     trash11.tel()
             # бос на 100 пойманых
-            if najat >= 10:
+            if najat >= 100:
                 # фон
                 bg = GameSprite("images/bg2.png", 0, 0, 0, 700, 500, "net")
                 bg.reset()
@@ -1255,7 +1464,113 @@ while run:
                     game2 = False
                     screendark()
                     currentlvl = 2
-                    
+        if game3 == True:
+            # вешь
+            thing= GameSprite("images/underwatercave.png", 300, 370, 0, 70, 70, "net")
+            # текст
+            ulose = Text(180, 230, "U lose, r to restart", font1, black)
+            # фон 
+            bg = GameSprite("images/floor_2.png", 0, 0, 0, 700, 500, "net")
+            # отрисофка фона
+            bg.reset()
+            
+            # пули - летать
+            if stopgame != True:
+                for bulet in bullets:
+                    bulet.fly()
+                    bulet.reset()
+            # отрисовка веши
+            thing.reset()
+            # игрок
+            player.reset()
+            keys = pygame.key.get_pressed()
+            if stopgame != True:
+                # передвижение
+                if keys[pygame.K_s]and player.rect.y<=500-player.hight:
+                    player.naprav = "down"
+                    player.rect.y+=player.speed
+                if keys[pygame.K_w]and player.rect.y>=0:
+                    player.naprav = "top"
+                    player.rect.y-=player.speed
+                if keys[pygame.K_a]and player.rect.x>=0:
+                    player.naprav = "left"
+                    player.rect.x-=player.speed
+                if keys[pygame.K_d]and player.rect.x <= 700-player.width:
+                    player.naprav = "right"
+                    player.rect.x+=player.speed
+                # отрисовка и методы enemy
+                for enemy in enemys:
+                    if pygame.sprite.collide_rect(player, enemy):
+                        hp -= 1
+                        if canspawn == True:
+                            enemy.tel()
+                        else:
+                            enemys.remove(enemy)
+                    enemy.run()
+                    enemy.reset()
+                for enemy in enemys:
+                    for bullet in bullets:
+                        if pygame.sprite.collide_rect(bullet, enemy):
+                            if canspawn == True:
+                                enemy.tel()
+                                killcount +=1
+                            else:
+                                enemys.remove(enemy)
+                # возможность поднять объект
+                if pygame.sprite.collide_rect(player, thing):
+                    if keys[pygame.K_SPACE]:
+                        if cancarrysomething == True:
+                            gameend = True
+                        else:
+                            pass
+
+                # анимации
+                if keys[pygame.K_s]:
+                    player.animdown()
+                if keys[pygame.K_w]:
+                    player.animtop()
+                if keys[pygame.K_a]:
+                    player.animleft()
+                if keys[pygame.K_d]:
+                    player.animright()
+                if keys[pygame.K_d] != True and keys[pygame.K_w] != True and keys[pygame.K_a] != True and keys[pygame.K_s] != True:
+                    if player.naprav == "down":
+                        image = pygame.transform.scale(pygame.image.load("images/player/player1.png"), (player.width, player.hight))
+                        player.image = image
+                    if player.naprav == "top":
+                        image = pygame.transform.scale(pygame.image.load("images/player/playertop.png"), (player.width, player.hight))
+                        player.image = image
+                    if player.naprav == "left":
+                        image = pygame.transform.scale(pygame.image.load("images/player/playerleft.png"), (player.width, player.hight))
+                        player.image = image
+                    if player.naprav == "right":
+                        image = pygame.transform.scale(pygame.image.load("images/player/playerright.png"), (player.width, player.hight))
+                        player.image = image
+                print(killcount)
+            # проигрышь
+            if hp <=0:
+                stopgame = True
+                # отрисовка текста
+                ulose.apear()
+                # рест
+                if keys[pygame.K_r]:
+                    player.rect.x = 250
+                    player.rect.y = 250
+                    for enemy in enemys:
+                        enemy.tel()
+                        stopgame = False
+                        hp = 3
+                        bullets.clear()
+            if killcount >= 35:
+                cancarrysomething = True
+                canspawn = False
+            # действия
+            if keys[pygame.K_p]:
+                pause = True
+        if gameend == True:
+            currentlvl = -2
+            game2=False
+            game3=False
     # Обновление дисплея и фпс
     pygame.display.update()
     clock.tick(fps)
