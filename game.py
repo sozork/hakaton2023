@@ -35,7 +35,7 @@ class GameSprite(pygame.sprite.Sprite):
                 player.naprav = "top"
                 self.rect.y += self.speed
         if keys[pygame.K_s]:
-            if titles[len(titles)-5].rect.y >230:
+            if titles[len(titles)-6].rect.y >230:
                 player.naprav = "down"
                 self.rect.y -= self.speed
     def move2(self):
@@ -53,7 +53,7 @@ class GameSprite(pygame.sprite.Sprite):
                 player.naprav = "top"
                 self.rect.y += self.speed
         if keys[pygame.K_s]:
-            if titles[len(titles)-1].rect.y >230:
+            if titles[len(titles)-6].rect.y >230:
                 player.naprav = "down"
                 self.rect.y -= self.speed
     def reset(self):
@@ -263,6 +263,8 @@ class Player2(GameSprite):
         self.speed = 0
         self.image = pygame.image.load("images/nothing.png")
         self.die = True
+    
+
 # класс противников
 class Enemy(GameSprite):
     def tel(self):
@@ -301,6 +303,7 @@ class Enemy(GameSprite):
         if self.current_sprite >=2:
             self.current_sprite = 0
         self.image = self.spritesdown[int(self.current_sprite)]
+
 
 # класс пуль
 class Bullet(GameSprite):
@@ -492,6 +495,10 @@ sounds.append(phonesound)
 shotsound = pygame.mixer.Sound("sounds/shot.mp3")
 shotsound.set_volume(soundvolume)
 sounds.append(shotsound)
+# новая музыка
+music = pygame.mixer.Sound("sounds/musicforgame1.mp3")
+music.set_volume(musicvolume)
+sounds.append(music)           
 # музыка
 pygame.mixer.music.load("sounds/menumusic.mp3")
 pygame.mixer.music.set_volume(musicvolume)
@@ -634,19 +641,6 @@ print("!!!Идёт загрузка подождите!!!")
 Createmap(map)
 # количество нажатий на мусор
 najat = 0
-# Фунуция рестарта
-def rest(x, y, x2, y2):
-    global player2
-    global player3
-    player2.die = False
-    player3.die = False
-    player2 = Player("images/player/playerdown1.png", x, y, 10, 70, 70, "net")
-    player2.animcr()
-    player3 = Player2("images/player/playerdown1.png", x2, y2, -10, 70, 70, "net")
-    player3.animcr()
-    player2.die = False
-    player3.die = False
-    
 # создаём окно игры и настраеваем его
 win = pygame.display.set_mode((700, 500))
 pygame.display.set_caption(":)(●'◡'●):-):-)^_^ಥ_ಥ(┬┬﹏┬┬)☆*: .｡. o(≧▽≦)o .｡.:*☆")
@@ -804,6 +798,20 @@ def do_function5():
         if pressed[0] == True:
             shotsound.play()
             najat += 1
+def rest(x, y, x2, y2):
+    global player2
+    global player3
+    player2.die = False
+    player3.die = False
+    player2 = Player("images/player/playerdown1.png", x, y, 10, 70, 70, "net")
+    player2.animcr()
+    player3 = Player2("images/player/playerdown1.png", x2, y2, -10, 70, 70, "net")
+    player3.animcr()
+    player2.die = False
+    player3.die = False
+# мебель
+table = GameSprite("images/table2.png", 500, 0, 5, 120, 120, "net")
+titles.append(table)
 #  КОТОРЫЙ ЧАС
 timme = timer()
 # основной цикл
@@ -1005,9 +1013,13 @@ while run:
                     screendark()
                     iscutscene = False
             else:
+                # текст
+                text = Text(30,450,"Наушник: подойди к двери и нажми 'space'", font1, white) 
+                # остановка звонка по телефону
                 phonesound.stop()
                 # фон 
                 bg = GameSprite("images/fon1.png", 0, 0, 0, 700, 500, "net")
+                
                 # Смена карты
                 if currentmap == 1:
                     doorsound.play()
@@ -1028,6 +1040,8 @@ while run:
                 # уровни
                 door.move()
                 door.reset()
+                # прорисовка текста
+                text.apear()
                 # игрок
                 player.reset()
                 keys = pygame.key.get_pressed()
@@ -1155,8 +1169,10 @@ while run:
             bg = GameSprite("images/bg3.png", 0, 0, 0, 700, 500, "net")
             # создаю иконки игр
             plate = GameSprite("images/game_1.png", 100, 100, 10, 150, 150, "net")
-            plate2 = GameSprite("images/shark.png", 450, 100, 10, 150, 150, "net")
-            plate3 = GameSprite("images/crab.png", 250, 300, 10, 150, 150, "net")
+            plate2 = GameSprite("images/game_2.png", 450, 100, 10, 150, 150, "net")
+            plate3 = GameSprite("images/game_3.png", 250, 300, 10, 150, 150, "net")
+            # создаю текст
+            text = Text(30,70,"Выбери направление и нажми на него", font1, white) 
             # Смена карты
             if currentmap == 3:
                 screendark()
@@ -1174,6 +1190,8 @@ while run:
                 currentlvl+=1
             # отрисофка фона
             bg.reset()
+            # отрисовка текста
+            text.apear()
             # отрисовка окон
             plate.reset()
             plate2.reset()
@@ -1268,10 +1286,7 @@ while run:
                     Createmap(map)
                     rest(310, 300, 500, 300)
                     currentlvl+=1
-                # новая музыка
-                pygame.mixer.music.load("sounds/musicforgame1.mp3")
-                pygame.mixer.music.set_volume(musicvolume)
-                pygame.mixer.music.play(-1)
+                
                 # прыжок и движение
                 player2.jump()
                 player2.move()
@@ -2017,7 +2032,7 @@ while run:
                 if keys[pygame.K_p]:
                     pause = True
             if gameend == True:
-                bg = GameSprite("images/plate_3", 0, 0, 0, 700, 500, "net")
+                bg = GameSprite("images/endgame.png", 0, 0, 0, 700, 500, "net")
                 bg.reset()
                 currentlvl = -2
                 game2=False
