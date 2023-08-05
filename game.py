@@ -2,8 +2,9 @@
 import pygame
 from random import randint
 from time import time as timer
+
 pygame.init()
-#создаём классы
+# классы
 class GameSprite(pygame.sprite.Sprite):
     def __init__(self, player_image, player_x, player_y, player_speed, player_w, player_h, naprav):
         global titles
@@ -345,99 +346,8 @@ class Text():
         win.blit(self.surface, (self.x-5, self.y-5))
         win.blit(self.word, (self.x, self.y))
         
-# цвета
-white = (255, 255, 255)
-black = (0, 0, 0)
-red = (255, 0, 0)
-green = (0, 255, 0)
-blue = (0, 0, 255)
-# назначаю шрифты
-pygame.font.init()
-font1 = pygame.font.Font("better-vcr_0.ttf", 20)
-font2 = pygame.font.Font("better-vcr_0.ttf", 8)
-font3 = pygame.font.Font("better-vcr_0.ttf",100)
-# переменная для списка тайтлов
-titles = []        
-dietitles = []
-doors = []
-buttons = []
-# переменые
-startjumpspeed = 9
-jumpspeed = startjumpspeed
-startjumpspeed2 = startjumpspeed
-jumpspeed2 = startjumpspeed2
-is_jump = False
-is_jump2 = False
-isdark = True
-pause = False
-canfall = True
-canfall2 = True
-currentlvl = -1
-currentmap = 0
-canplay1 = True
-canplay2 = False
-game2 = False
-losegame2 = False
-fallgame2stop = False
-canbigfall = True
-cansetcurecttime = True
-game3 = False
-naprav = "down"
-bullets = list()
-menu = True
-canplay3 = True
-game3 = False
-enemys = list()
-hp = 3
-stopgame = False
-canspawn = True
-killcount = 0
-cancarrysomething = False
-gameend = False
-iscutscene = False
-currenttext = 0
-texts = list()
-spp = GameSprite("images/spp.png", 170, 380, 0, 30, 30, "none")
-bulletscount = 10
-canpickupclip = True
-dificulty = 0
-canshowdif = False
-canshowopt = False
-canplaywalksound = True
-# звуки
-sounds = []
-musicvolume = 1
-soundvolume = 1
-shag = pygame.mixer.Sound("sounds/shag.mp3")
-shag.set_volume(soundvolume)
-sounds.append(shag)
-jumpsound = pygame.mixer.Sound("sounds/jumpsound.mp3")
-jumpsound.set_volume(soundvolume)
-sounds.append(jumpsound)
-clicksound = pygame.mixer.Sound("sounds/click.mp3")
-clicksound.set_volume(soundvolume)
-sounds.append(clicksound)
-doorsound = pygame.mixer.Sound("sounds/doorsound.mp3")
-doorsound.set_volume(soundvolume)
-sounds.append(doorsound)
-watersound = pygame.mixer.Sound("sounds/water.mp3")
-watersound.set_volume(soundvolume)
-sounds.append(watersound)
-callendsound = pygame.mixer.Sound("sounds/endcall.mp3")
-callendsound.set_volume(soundvolume)
-sounds.append(callendsound)
-phonesound = pygame.mixer.Sound("sounds/phonecall.ogg")
-phonesound.set_volume(soundvolume)
-sounds.append(phonesound)
-shotsound = pygame.mixer.Sound("sounds/shot.mp3")
-shotsound.set_volume(soundvolume)
-sounds.append(shotsound)
-# музыка
-pygame.mixer.music.load("sounds/menumusic.mp3")
-pygame.mixer.music.set_volume(musicvolume)
-pygame.mixer.music.play(-1)
-
 # разные тексты
+texts = []
 text0 = "phone: Привет, не мог ли ты мне достать "
 text1 = "phone: потеряную риликвию со дна моря?"
 text2 = "phone: Ты же не далеко живёшь, помоги. "
@@ -496,14 +406,98 @@ texts.append(text25)
 texts.append(text26)
 texts.append(text27)
 texts.append(text28)
-# разные карты
-map1 ="aaaaaaaaaaaaaaa//aaaaaaaaaaaaaaa//aaaaaaaaaaaaaaa//aaaaaaaaaaaaaaa//aaaaaaaaaaaaaaa//aaaaaaaaaaaaaaa//aaaaaaaaaaaaaaa/"
-map2 = "aaaaaaaaaaaaaaa//aaaaaaaaaaaaaaa//aaaaaaaaaaaaaaa//aaaaaaaaaaaaaaa//aaaaaaaaaaaaaaa//aaaaaaaaaaaaaaa//aaaaaaaaaaaaaaa/"
-map3 = "nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnndnnnnn/nnnnnnsnnnnnnnn/lrnnlpprnvnnnnnnn/"
-map4 = "nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/dnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/lprnnnnnnnnnnnn/nnnnnnnnnsnnnnn/nnnnlpprnvnnnnnnn/"
-map5 = "nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnndnnnnnnnnn/nnnnnnnnnnnnnnn/lprnlprnnvnnnnnnn/"
-map6 = "nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/lppppprnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnndnnnnn/nnnnnnnnnnnnnnn/lrnnlprnnvnnnnnnn/"
-map7 = "nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/vnnnndnnnnnnnnn/nnnnnnnnnnnnnn/nlrnlrnnlrnnnnn/"
+# цвета
+white = (255, 255, 255)
+black = (0, 0, 0)
+red = (255, 0, 0)
+green = (0, 255, 0)
+blue = (0, 0, 255)
+# назначаю шрифты
+pygame.font.init()
+font1 = pygame.font.Font("better-vcr_0.ttf", 20)
+font2 = pygame.font.Font("better-vcr_0.ttf", 8)
+font3 = pygame.font.Font("better-vcr_0.ttf",100)
+# переменная для списка тайтлов
+titles = []        
+dietitles = []
+doors = []
+buttons = []
+# переменые
+startjumpspeed = 9
+jumpspeed = startjumpspeed
+startjumpspeed2 = startjumpspeed
+jumpspeed2 = startjumpspeed2
+is_jump = False
+is_jump2 = False
+isdark = True
+pause = False
+canfall = True
+canfall2 = True
+currentlvl = -1
+currentmap = 0
+canplay1 = True
+canplay2 = False
+game2 = False
+losegame2 = False
+fallgame2stop = False
+canbigfall = True
+cansetcurecttime = True
+game3 = False
+naprav = "down"
+bullets = list()
+menu = True
+canplay3 = True
+game3 = False
+enemys = list()
+hp = 3
+stopgame = False
+canspawn = True
+killcount = 0
+cancarrysomething = False
+gameend = False
+iscutscene = False
+currenttext = 0
+spp = GameSprite("images/spp.png", 170, 380, 0, 30, 30, "none")
+bulletscount = 10
+canpickupclip = True
+dificulty = 0
+canshowdif = False
+canshowopt = False
+canplaywalksound = True
+# звуки
+sounds = []
+musicvolume = 1
+soundvolume = 1
+shag = pygame.mixer.Sound("sounds/shag.mp3")
+shag.set_volume(soundvolume)
+sounds.append(shag)
+jumpsound = pygame.mixer.Sound("sounds/jumpsound.mp3")
+jumpsound.set_volume(soundvolume)
+sounds.append(jumpsound)
+clicksound = pygame.mixer.Sound("sounds/click.mp3")
+clicksound.set_volume(soundvolume)
+sounds.append(clicksound)
+doorsound = pygame.mixer.Sound("sounds/doorsound.mp3")
+doorsound.set_volume(soundvolume)
+sounds.append(doorsound)
+watersound = pygame.mixer.Sound("sounds/water.mp3")
+watersound.set_volume(soundvolume)
+sounds.append(watersound)
+callendsound = pygame.mixer.Sound("sounds/endcall.mp3")
+callendsound.set_volume(soundvolume)
+sounds.append(callendsound)
+phonesound = pygame.mixer.Sound("sounds/phonecall.ogg")
+phonesound.set_volume(soundvolume)
+sounds.append(phonesound)
+shotsound = pygame.mixer.Sound("sounds/shot.mp3")
+shotsound.set_volume(soundvolume)
+sounds.append(shotsound)
+# музыка
+pygame.mixer.music.load("sounds/menumusic.mp3")
+pygame.mixer.music.set_volume(musicvolume)
+pygame.mixer.music.play(-1)
+
+
 # затемнение экрана
 def screendark():
     image = pygame.Surface([700,500], pygame.SRCALPHA, 32)
@@ -574,20 +568,7 @@ def do_collide(titles):
                 rest(15, 300, 15, 140)
             if currentlvl == 7:
                 rest(15, 200, 629, 300)
-
-# создаю 1 уровень
-cave_1 = GameSprite("images/cave_1.png", 760, 50, 5, 140, 450, "net")        
-door = GameSprite("images/door.png", 500, 130, 5, 80, 90, "net")        
-# создаю карту
-map ="fffffffff//fffffffff//fffffffff//fffffffff//fffffffff//fffffffff//fffffffff"
-TitleX = 0
-line = 0
-titles.clear()
-#  фон
-sky = GameSprite("images/sky.png", 0, 0, 0, 700, 500, "net")
-# идёт загрузка подождите
-print("!!!Идёт загрузка подождите!!!")
-# Функция для создания карты
+# функция создания карты
 def Createmap(map):
     global TitleX
     global line
@@ -637,6 +618,19 @@ def Createmap(map):
             floor = GameSprite("images/planks_"+str(i) + ".png", TitleX, line, 5, 70, 70, "net")
             titles.append(floor)
             TitleX += 70
+# создаю 1 уровень
+cave_1 = GameSprite("images/cave_1.png", 760, 50, 5, 140, 450, "net")        
+door = GameSprite("images/door.png", 500, 130, 5, 80, 90, "net")        
+# создаю карту
+map ="fffffffff//fffffffff//fffffffff//fffffffff//fffffffff//fffffffff//fffffffff"
+TitleX = 0
+line = 0
+titles.clear()
+#  фон
+sky = GameSprite("images/sky.png", 0, 0, 0, 700, 500, "net")
+# идёт загрузка подождите
+print("!!!Идёт загрузка подождите!!!")
+# Функция для создания карты
 Createmap(map)
 # количество нажатий на мусор
 najat = 0
@@ -673,7 +667,7 @@ trash1 = Trash("images/player/playerdown1.png", randint(10, 700-60), 10, randint
 trash2 = Trash("images/player/playerdown1.png", randint(10, 700-60), 10, randint(1, 5), 60, 60, "net")
 trash3 = Trash("images/player/playerdown1.png", randint(10, 700-60), 10, randint(1, 5), 60, 60, "net")
 trash4 = Trash("images/player/playerdown1.png", randint(10, 700-60), 10, randint(1, 5), 60, 60, "net")
-trash5 = Trash("images/player/playerdown1.png", randint(10, 700-60), 10, randint(1, 5), 60, 60, "net")
+trash5 =Trash("images/player/playerdown1.png", randint(10, 700-60), 10, randint(1, 5), 60, 60, "net")
 trash6 = Trash("images/player/playerdown1.png", randint(10, 700-60), 10, randint(1, 5), 60, 60, "net")
 trash7 = Trash("images/player/playerdown1.png", randint(10, 700-60), 10, randint(1, 5), 60, 60, "net")
 trash8 = Trash("images/player/playerdown1.png", randint(10, 700-60), 10, randint(1, 5), 60, 60, "net")
@@ -704,6 +698,14 @@ trash9.tel()
 trash10.tel()
 trash11.tel()
 trashBIG = Trash("images/bigshark.png", 200, 10, 2, 200, 200, "net")
+# разные карты
+map1 ="aaaaaaaaaaaaaaa//aaaaaaaaaaaaaaa//aaaaaaaaaaaaaaa//aaaaaaaaaaaaaaa//aaaaaaaaaaaaaaa//aaaaaaaaaaaaaaa//aaaaaaaaaaaaaaa/"
+map2 = "aaaaaaaaaaaaaaa//aaaaaaaaaaaaaaa//aaaaaaaaaaaaaaa//aaaaaaaaaaaaaaa//aaaaaaaaaaaaaaa//aaaaaaaaaaaaaaa//aaaaaaaaaaaaaaa/"
+map3 = "nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnndnnnnn/nnnnnnsnnnnnnnn/lrnnlpprnvnnnnnnn/"
+map4 = "nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/dnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/lprnnnnnnnnnnnn/nnnnnnnnnsnnnnn/nnnnlpprnvnnnnnnn/"
+map5 = "nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnndnnnnnnnnn/nnnnnnnnnnnnnnn/lprnlprnnvnnnnnnn/"
+map6 = "nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/lppppprnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnndnnnnn/nnnnnnnnnnnnnnn/lrnnlprnnvnnnnnnn/"
+map7 = "nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/nnnnnnnnnnnnnnnn/vnnnndnnnnnnnnn/nnnnnnnnnnnnnn/nlrnlrnnlrnnnnn/"
 # противники
 enemy1 = Enemy("images/crab.png", randint(10, 700-60), 10, randint(1, 5), 70, 70, "net")
 enemy1.tel()
@@ -757,7 +759,7 @@ def timeset(time):
     else:
         if curecttime - starttime <= time:
             fallgame2stop = True
-            losetext = Text(130, 200, "U lose", font2, black)
+            losetext = Text(130, 200, "U lose", font3, black)
             losetext.apear()
         else:
             done = True
@@ -844,6 +846,10 @@ while run:
                                 else:
                                     if i.key == pygame.K_SPACE:
                                         currenttext+=1
+                    if game3 == True:
+                        if i.key == pygame.K_SPACE:
+                            iscutscene = False
+                            screendark()
                     else:
                         if i.key == pygame.K_SPACE:
                             currenttext+=1
@@ -990,6 +996,8 @@ while run:
                         canplaywalksound = False
                 if currenttext == 9:
                     canplaywalksound = True
+                    callendsound.stop()
+                if currenttext >= 9:
                     callendsound.stop()
                 cutscene.reset()
                 text.apear()
@@ -1147,8 +1155,8 @@ while run:
             bg = GameSprite("images/bg3.png", 0, 0, 0, 700, 500, "net")
             # создаю иконки игр
             plate = GameSprite("images/game_1.png", 100, 100, 10, 150, 150, "net")
-            plate2 = GameSprite("images/game_1.png", 450, 100, 10, 150, 150, "net")
-            plate3 = GameSprite("images/game_1.png", 250, 300, 10, 150, 150, "net")
+            plate2 = GameSprite("images/shark.png", 450, 100, 10, 150, 150, "net")
+            plate3 = GameSprite("images/crab.png", 250, 300, 10, 150, 150, "net")
             # Смена карты
             if currentmap == 3:
                 screendark()
@@ -1181,6 +1189,9 @@ while run:
                         iscutscene = True
                         currentmap = 3
                         clicksound.play()
+                    else:
+                        text = Text(30, 30, "ты уже там был", font1, white)
+                        text.apear()
             if plate2.rect.collidepoint(pos):
                 print(pos, plate2.rect.x, plate2.rect.y)
                 if pressed[0] == True:  
@@ -1191,6 +1202,9 @@ while run:
                         game2 = True
                         iscutscene = True
                         clicksound.play()
+                    else:
+                        text = Text(30, 30, "Ты ещё туда не дошёл", font1, white)
+                        text.apear()
             if plate3.rect.collidepoint(pos):
                 print(pos, plate3.rect.x, plate3.rect.y)
                 if pressed[0] == True:
@@ -1198,8 +1212,11 @@ while run:
                         canplay1 = False
                         game3 = True
                         clicksound.play()
+                        iscutscene = True
                         cansetcurecttime == True
-                        
+                    else:
+                        text = Text(30, 30, "пока не туда", font3, white)
+                        text.apear()
             
         if currentlvl == 3:   
             if iscutscene == True:
@@ -1218,7 +1235,7 @@ while run:
                 text3.apear()
                 text4.apear()
                 text5 = Text(360,90,texts[15], font2, white) 
-                text6 = Text(360,120,texts[16], font2, white) 
+                text6 =Text(360,120,texts[16], font2, white) 
                 text5.apear()
                 text6.apear()
                 text7 = Text(360,160,texts[17], font2, white) 
@@ -1242,7 +1259,7 @@ while run:
                 if currentmap == 4:
                     screendark()
                     #создание карты
-                    map = map4
+                    map =map4
                     TitleX = 0
                     line = 50
                     titles.clear()
@@ -1694,11 +1711,16 @@ while run:
 
             else:
                 if najat < 100*dificulty:
+                    # текст
+                    text = Text(170, 30, "phone, стреляй по ним!", font1, white)
+                    
                     # вывод количества подобраного мусора
                     trashtext = Text(20, 20, najat, font1, white)
                     # фон
                     bg = GameSprite("images/bg2.png", 0, 0, 0, 700, 500, "net")
                     bg.reset()
+                    # обновление текста
+                    text.apear()
                     # мусор
                     if fallgame2stop == False:
                         trash1.fall()
@@ -1753,6 +1775,7 @@ while run:
                             trash9.tel()
                             trash10.tel()
                             trash11.tel()
+                            trashBIG.rect.y = 0
                             fallgame2stop = False
                             losegame2 = False
                     # прорисовка текста
@@ -1845,146 +1868,164 @@ while run:
                     player.rect.x = 250
                     player.rect.y = 250 
         if game3 == True:
-            bulletcount = GameSprite("images/bullettop.png", 500, 410, 0, 20, 20, "net")
-            crableft = GameSprite("images/leftcrab.png", 300, 410, 0, 40, 40, "net")
-            manuhp = GameSprite("images/hearth.png", 100, 410, 0, 40, 40, "net")
-            surface = pygame.Surface([700, 200], pygame.SRCALPHA, 32)
-            surface = surface.convert_alpha()
-            surface.fill((0, 0, 0, 180))
-            # вешь
-            thing= GameSprite("images/underwatercave.png", 300, 370, 0, 70, 70, "net")
-            # текст
-            ulose = Text(180, 230, "U lose, r to restart", font1, white)
-            howmanybullets = Text(450, 410, bulletscount, font1, white)
-            howmanyhp = Text(50, 410, hp, font1, white)
-            howmanycrab = Text(250, 410, killcount, font1, white)
-            # фон 
-            bg = GameSprite("images/floor_2.png", 0, 0, 0, 700, 500, "net")
-            # отрисофка фона
-            bg.reset()
-            
-            # пули - летать
-            if stopgame != True:
-                for bulet in bullets:
-                    bulet.fly()
-                    bulet.reset()
-            # отрисовка вещи
-            thing.reset()
-            # бонус
-            if killcount > 14:
-                if canpickupclip == True:
-                    clip = GameSprite("images/clip.png", randint(1, 700), randint(1, 500), 0, 20, 20, "net")
-                    canpickupclip = False
-                clip.reset()
-                if pygame.sprite.collide_rect(player, clip):
-                    bulletscount = 10
-                    clip.rect.x = -100
+            print(iscutscene)
+            if iscutscene:
+                bg = GameSprite("images/cutscene5.png", 0, 0, 0, 700, 500, "net")
+                bg.reset()
+                text0 = Text(200, 30, "Crab, при косании отнимает hp", font2, white)
+                text0.apear()
+                text1 = Text(400, 200, "Магазин, при косании пополняет поезапас", font2, white)
+                text1.apear()
+                text2 = Text(430, 400, "F, что бы стрелять", font2, white)
+                text2.apear()
+            else:
+                
+                print(iscutscene)
+                bulletcount = GameSprite("images/bullettop.png", 500, 410, 0, 20, 20, "net")
+                crableft = GameSprite("images/leftcrab.png", 300, 410, 0, 40, 40, "net")
+                manuhp = GameSprite("images/hearth.png", 100, 410, 0, 40, 40, "net")
+                surface = pygame.Surface([700, 200], pygame.SRCALPHA, 32)
+                surface = surface.convert_alpha()
+                surface.fill((0, 0, 0, 180))
+                # вешь
+                thing= GameSprite("images/something.png", 300, 370, 0, 70, 70, "net")
+                # текст
+                ulose = Text(180, 230, "U lose, r to restart", font1, white)
+                howmanybullets = Text(450, 410, bulletscount, font1, white)
+                howmanyhp = Text(50, 410, hp, font1, white)
+                howmanycrab = Text(250, 410, killcount, font1, white)
+                # фон 
+                bg = GameSprite("images/floor_2.png", 0, 0, 0, 700, 500, "net")
+                # отрисофка фона
+                bg.reset()
+                # подсказка
+                text = Text(30, 30, "phone: ВОН МОё сокровище, убей всех крабов и забери его 'space'", font2, white)
+                text.apear()
+                # пули - летать
+                if stopgame != True:
+                    for bulet in bullets:
+                        bulet.fly()
+                        bulet.reset()
+                # отрисовка вещи
+                thing.reset()
+                # бонус
+                if killcount > 14:
+                    if canpickupclip == True:
+                        clip = GameSprite("images/clip.png", randint(1, 700), randint(1, 500), 0, 20, 20, "net")
+                        canpickupclip = False
+                    clip.reset()
+                    if pygame.sprite.collide_rect(player, clip):
+                        bulletscount = 10
+                        clip.rect.x = -100
 
-            # игрок
-            player.reset()
-            keys = pygame.key.get_pressed()
-            if stopgame != True:
-                # передвижение
-                if keys[pygame.K_s]and player.rect.y<=500-player.hight:
-                    player.naprav = "down"
-                    player.rect.y+=player.speed
-                if keys[pygame.K_w]and player.rect.y>=0:
-                    player.naprav = "top"
-                    player.rect.y-=player.speed
-                if keys[pygame.K_a]and player.rect.x>=0:
-                    player.naprav = "left"
-                    player.rect.x-=player.speed
-                if keys[pygame.K_d]and player.rect.x <= 700-player.width:
-                    player.naprav = "right"
-                    player.rect.x+=player.speed
-                # отрисовка и методы enemy
-                for enemy in enemys:
-                    if pygame.sprite.collide_rect(player, enemy):
-                        hp -= 1
-                        if canspawn == True:
-                            enemy.tel()
-                        else:
-                            enemys.remove(enemy)
-                    enemy.run()
-                    enemy.anim()
-                    enemy.reset()
-                for enemy in enemys:
-                    for bullet in bullets:
-                        if pygame.sprite.collide_rect(bullet, enemy):
+                # игрок
+                player.reset()
+                keys = pygame.key.get_pressed()
+                if stopgame != True:
+                    # передвижение
+                    if keys[pygame.K_s]and player.rect.y<=500-player.hight:
+                        player.naprav = "down"
+                        player.rect.y+=player.speed
+                    if keys[pygame.K_w]and player.rect.y>=0:
+                        player.naprav = "top"
+                        player.rect.y-=player.speed
+                    if keys[pygame.K_a]and player.rect.x>=0:
+                        player.naprav = "left"
+                        player.rect.x-=player.speed
+                    if keys[pygame.K_d]and player.rect.x <= 700-player.width:
+                        player.naprav = "right"
+                        player.rect.x+=player.speed
+                    # отрисовка и методы enemy
+                    for enemy in enemys:
+                        if pygame.sprite.collide_rect(player, enemy):
+                            hp -= 1
                             if canspawn == True:
                                 enemy.tel()
-                                killcount +=1
                             else:
                                 enemys.remove(enemy)
-                # отрисовка меню
-                win.blit(surface, (0, 400))
-                bulletcount.reset()
-                manuhp.reset()
-                crableft.reset()
-                howmanybullets.apear()
-                howmanyhp.apear()
-                howmanycrab.apear()
-                # возможность поднять объект
-                if pygame.sprite.collide_rect(player, thing):
-                    if keys[pygame.K_SPACE]:
-                        if cancarrysomething == True:
-                            gameend = True
-                        else:
-                            pass
-
-                # анимации
-                if keys[pygame.K_s]:
-                    player.animdown()
-                if keys[pygame.K_w]:
-                    player.animtop()
-                if keys[pygame.K_a]:
-                    player.animleft()
-                if keys[pygame.K_d]:
-                    player.animright()
-                if keys[pygame.K_d] != True and keys[pygame.K_w] != True and keys[pygame.K_a] != True and keys[pygame.K_s] != True:
-                    if player.naprav == "down":
-                        image = pygame.transform.scale(pygame.image.load("images/player/player1.png"), (player.width, player.hight))
-                        player.image = image
-                    if player.naprav == "top":
-                        image = pygame.transform.scale(pygame.image.load("images/player/playertop.png"), (player.width, player.hight))
-                        player.image = image
-                    if player.naprav == "left":
-                        image = pygame.transform.scale(pygame.image.load("images/player/playerleft.png"), (player.width, player.hight))
-                        player.image = image
-                    if player.naprav == "right":
-                        image = pygame.transform.scale(pygame.image.load("images/player/playerright.png"), (player.width, player.hight))
-                        player.image = image
-                print(killcount)
-
-            # проигрышь
-            if hp <=0:
-                stopgame = True
-                # отрисовка текста
-                ulose.apear()
-                # рест
-                if keys[pygame.K_r]:
-                    player.rect.x = 250
-                    player.rect.y = 250
+                        enemy.run()
+                        enemy.anim()
+                        enemy.reset()
                     for enemy in enemys:
-                        enemy.tel()
-                    stopgame = False
-                    hp = 3
-                    bullets.clear()
-                    killcount = 0
-                    cansetcurecttime = True
-            if killcount >= 35*dificulty:
-                cancarrysomething = True
-                canspawn = False
-            # действия
-            if keys[pygame.K_p]:
-                pause = True
-        if gameend == True:
-            currentlvl = -2
-            game2=False
-            game3=False
+                        for bullet in bullets:
+                            if pygame.sprite.collide_rect(bullet, enemy):
+                                if canspawn == True:
+                                    enemy.tel()
+                                    killcount +=1
+                                else:
+                                    enemys.remove(enemy)
+                    # отрисовка меню
+                    win.blit(surface, (0, 400))
+                    bulletcount.reset()
+                    manuhp.reset()
+                    crableft.reset()
+                    howmanybullets.apear()
+                    howmanyhp.apear()
+                    howmanycrab.apear()
+                    # возможность поднять объект
+                    if pygame.sprite.collide_rect(player, thing):
+                        if keys[pygame.K_SPACE]:
+                            if cancarrysomething == True:
+                                gameend = True
+                            else:
+                                pass
+
+                    # анимации
+                    if keys[pygame.K_s]:
+                        player.animdown()
+                    if keys[pygame.K_w]:
+                        player.animtop()
+                    if keys[pygame.K_a]:
+                        player.animleft()
+                    if keys[pygame.K_d]:
+                        player.animright()
+                    if keys[pygame.K_d] != True and keys[pygame.K_w] != True and keys[pygame.K_a] != True and keys[pygame.K_s] != True:
+                        if player.naprav == "down":
+                            image = pygame.transform.scale(pygame.image.load("images/player/player1.png"), (player.width, player.hight))
+                            player.image = image
+                        if player.naprav == "top":
+                            image = pygame.transform.scale(pygame.image.load("images/player/playertop.png"), (player.width, player.hight))
+                            player.image = image
+                        if player.naprav == "left":
+                            image = pygame.transform.scale(pygame.image.load("images/player/playerleft.png"), (player.width, player.hight))
+                            player.image = image
+                        if player.naprav == "right":
+                            image = pygame.transform.scale(pygame.image.load("images/player/playerright.png"), (player.width, player.hight))
+                            player.image = image
+                    print(iscutscene)
+
+                # проигрышь
+                if hp <=0:
+                    stopgame = True
+                    # отрисовка текста
+                    ulose.apear()
+                    # рест
+                    if keys[pygame.K_r]:
+                        player.rect.x = 250
+                        player.rect.y = 250
+                        for enemy in enemys:
+                            enemy.tel()
+                        stopgame = False
+                        hp = 3
+                        bullets.clear()
+                        killcount = 0
+                        cansetcurecttime = True
+                if killcount >= 35*dificulty:
+                    cancarrysomething = True
+                    canspawn = False
+                # действия
+                if keys[pygame.K_p]:
+                    pause = True
+            if gameend == True:
+                bg = GameSprite("images/plate_3", 0, 0, 0, 700, 500, "net")
+                bg.reset()
+                currentlvl = -2
+                game2=False
+                game3=False
     # Обновление дисплея и фпс
     pygame.display.update()
     clock.tick(fps)
+
     # пауза
     keys = pygame.key.get_pressed()
     if keys[pygame.K_u]:
